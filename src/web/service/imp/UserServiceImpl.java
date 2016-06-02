@@ -1,6 +1,5 @@
 package web.service.imp;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,21 +18,17 @@ import web.util.QueryResult;
 
 
 @Service("userService")
-public class UserServiceImpl extends BaseServiceImpl implements UserService{
+public class UserServiceImpl extends BaseServiceImpl<User> implements UserService{
 
 	Logger log = Logger.getLogger(User.class);
 
 	@Resource(name = "userDao")
 	private UserDao userDao;
 	
-	public User getById(Integer id) {
-		return userDao.get(id);
-	}
-	
 	public Pagination<User> getUserList(Map<String,Object> paramMap,Pager pager)
 	{
 		Pagination<User> pagination = new Pagination<User>();
-		QueryResult<User> queryResult = userDao.findUserList(paramMap,
+		QueryResult<User> queryResult = userDao.findList(paramMap,
 				pager.getStartIndex(), pager.getPageSize(),
 				pager.getSort(), pager.getDir());
 			

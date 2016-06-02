@@ -3,14 +3,13 @@ package web.base;
 public interface IBaseService {
 
 	/**
-	 * 根据主键id和对象class，获得对象
+	 * 根据主键id，获得对象
 	 * 
-	 * @param clazz
 	 * @param id
 	 * @return
 	 */
-	@SuppressWarnings("rawtypes")
-	public Object find(Class clazz, Long id);
+	
+	public Object find(Integer id);
 
 	/**
 	 * 删除

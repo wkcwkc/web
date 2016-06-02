@@ -7,7 +7,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -19,6 +21,9 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import web.model.User;
+import web.util.CreateHQL;
 import web.util.QueryResult;
 
 @Repository("baseDao")
@@ -59,8 +64,8 @@ public class BaseHibernateDao<T, ID extends Serializable> extends HibernateDaoSu
 	/**
 	 * 根据ID获取对象.
 	 */
-	public Object get(T entityClass, ID id) {
-		return super.getHibernateTemplate().get(entityClass.getClass(), id);
+	public Object get(Class<? extends Object> entityClass,ID id) {
+		return super.getHibernateTemplate().get(entityClass, id);
 	}
 
 	/**
@@ -130,11 +135,14 @@ public class BaseHibernateDao<T, ID extends Serializable> extends HibernateDaoSu
 			query.setFirstResult(firstindex).setMaxResults(maxresult);
 		List<T> list = query.list();
 		qr.setResultlist(list);
-		query = session.createQuery("select count(*) from " + entityname + " o "
-				+ (wherejpql == null || "".equals(wherejpql.trim()) ? "" : "where " + wherejpql));
-		setQueryParams(query, queryParams);
-		query.setFirstResult(0).setMaxResults(1);
-		qr.setTotalrecord((Long) query.uniqueResult());
+		
+//		query = session.createQuery("select count(*) from " + entityname + " o "
+//				+ (wherejpql == null || "".equals(wherejpql.trim()) ? "" : "where " + wherejpql));
+//		setQueryParams(query, queryParams);
+//		query.setFirstResult(0).setMaxResults(1);		
+//		qr.setTotalrecord((Long) query.uniqueResult());
+		
+		qr.setTotalrecord(new Long(list.size()));
 		session.close();
 		return qr;
 	}
@@ -226,6 +234,27 @@ public class BaseHibernateDao<T, ID extends Serializable> extends HibernateDaoSu
 			return Object.class;
 		}
 		return (Class) params[index];
+	}
+	
+	/**
+	 * 根据参数map查找用户集
+	 * @param paramMap 		查询参数
+	 * @param firstindex	
+	 * @param maxresult
+	 * @param sort			排序字段
+	 * @param order			排序方式
+	 * @return
+	 */
+	public QueryResult<T> findList(Map<String,Object> paramMap,
+			Integer firstindex,Integer maxresult, String sort,String order)
+	{
+		StringBuffer hql = new StringBuffer("");
+		List<Object> params = new ArrayList<Object>();
+		
+		CreateHQL.createFindHQL(paramMap,hql,params);
+		
+		return getQueryResult(firstindex, maxresult, hql.toString(),
+				params.toArray(), sort, order);		
 	}
 
 }

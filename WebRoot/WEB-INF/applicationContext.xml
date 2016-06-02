@@ -47,6 +47,9 @@
 		<property name="mappingResources">
 			<list>
 				<value>web/model/User.hbm.xml</value>
+				<value>web/model/UserComment.hbm.xml</value>
+				<value>web/model/Video.hbm.xml</value>
+				<value>web/model/VideoImg.hbm.xml</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

@@ -12,7 +12,9 @@
 		test页面	
 	</div>
 	${user.name} ${user.nickName}
-	
+	${videoImg.id} ${videoImg.videoId}
+	${video.name} ${video.videoImg.videoId}
+	${userComment.id} ${userComment.word} ${userComment.video.name}
 	
 	<!-- Content ends -->
 	<c:import url="/inc/website/footer.jsp"></c:import>

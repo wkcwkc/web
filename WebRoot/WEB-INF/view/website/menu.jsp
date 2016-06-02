@@ -11,7 +11,7 @@
 	<div>
 		前台菜单	
 	</div>
-	<a href="/login/loginout">退出当前用户</a>
+	<a href="${_PATH}/login/loginout">退出当前用户</a>
 	
 	<!-- Content ends -->
 	<c:import url="/inc/website/footer.jsp"></c:import>

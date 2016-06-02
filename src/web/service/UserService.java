@@ -9,14 +9,7 @@ import web.model.User;
 
 
 public interface UserService extends IBaseService{
-	
-	/**
-	 * 通过ID获取对象
-	 * @param id
-	 * @return
-	 */
-	public User getById(Integer id);
-	
+		
 	/**
 	 * 根据参数map查找用户集
 	 * @param paramMap	查询参数

@@ -13,8 +13,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import web.base.Pager;
+import web.base.Pagination;
 import web.model.User;
+import web.model.UserComment;
+import web.model.Video;
+import web.model.VideoImg;
+import web.service.UserCommentService;
 import web.service.UserService;
+import web.service.VideoImgService;
+import web.service.VideoService;
 
 
 @RequestMapping("/test")
@@ -26,6 +33,15 @@ public class TestController {
 	@Resource(name = "userService")
 	private UserService userService;
 	
+	@Resource(name = "videoImgService")
+	private VideoImgService videoImgService;
+	
+	@Resource(name = "videoService")
+	private VideoService videoService;
+	
+	@Resource(name = "userCommentService")
+	private UserCommentService userCommentService;
+	
 	@RequestMapping(value = "")
 	public String index(Model model, HttpServletRequest request,HttpServletResponse response)
 	{
@@ -33,11 +49,20 @@ public class TestController {
 		
 		Pager pager=new Pager();
 		pager.setPageSize(10); 
-		
 		paramMap.put("level",100);
-		User user=userService.getUserList(paramMap, pager).getRecords().get(0);
-		
+		Pagination<User> paginationUser=userService.getUserList(paramMap, pager);
+		User user=paginationUser.getRecords().get(0);
+		//User user=(User) userService.find(1);
 		model.addAttribute("user", user);
+		
+		VideoImg videoImg=(VideoImg) videoImgService.find(1);
+		model.addAttribute("videoImg", videoImg);
+		
+		Video video=(Video) videoService.find(1);
+		model.addAttribute("video", video);
+		
+		UserComment userComment=(UserComment) userCommentService.find(1);
+		model.addAttribute("userComment", userComment);
 		
 		return "/test";
 	}

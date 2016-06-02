@@ -1,19 +1,21 @@
 package web.base;
 
+import java.lang.reflect.ParameterizedType;
+
 import javax.annotation.Resource;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-public class BaseServiceImpl implements IBaseService {
+
+public class BaseServiceImpl<T> implements IBaseService {
 
 	@Resource(name = "baseDao")
-	private BaseHibernateDao<Object, Long> baseDao;
-
-	@SuppressWarnings("rawtypes")
-	public Object find(Class clazz, Long id) {
-		return baseDao.get(clazz, id);
+	private BaseHibernateDao<Object, Integer> baseDao;
+	
+	public Object find(Integer id) {
+		return baseDao.get((Class)((ParameterizedType)this.getClass().getGenericSuperclass()).getActualTypeArguments()[0],id);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
