@@ -16,6 +16,8 @@
       
     <context:component-scan base-package="web" />
     <aop:aspectj-autoproxy proxy-target-class="true"/> 
+    
+    <import resource="spring_task.xml"/>
 
 	<bean id="propertyConfigurer"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
